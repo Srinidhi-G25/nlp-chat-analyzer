@@ -1,33 +1,47 @@
 # 📱 WhatsApp Chat Analyzer & NLP Classifier
 
-## 🚀 Project Overview
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app)
+**Academic Title:** Predictive Text Analysis on Unstructured Chat Data
 
-**🔗 Live Demo:** [Try it here](https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app) — no setup needed, just type a message and see who the AI thinks sent it.
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app/) 
 
-This project is an end-to-end Machine Learning pipeline that ingests raw, unstructured WhatsApp chat exports and builds a predictive NLP classification model. The engine analyzes group texting habits, extracts unique linguistic signatures, and predicts the sender of a given text message based on their mathematical vocabulary profile.
+This project is an end-to-end Machine Learning pipeline that securely ingests proprietary, multi-party conversational text, sanitizes it of sensitive identifiers, and accurately classifies the authorship of anonymous messages based purely on stylometric features (vocabulary, syntax, and phrasing).
 
-## 🛠️ Tech Stack
+## 🚀 System Architecture
+
+This project is decoupled into two distinct modules—Data Engineering and Model Inference—to ensure scalability, separation of concerns, and strict adherence to data privacy standards.
+
+* **`parser.py` (ETL & Data Engineering Pipeline):** A standalone ingestion script that processes raw, unstructured WhatsApp `.txt` exports. It utilizes a custom Regex engine with a multi-tier logical check to sanitize invisible Unicode markers (`\u200e`, `\u202f`) and filter system-generated noise. To ensure zero data leakage, real identities are dynamically anonymized entirely in RAM prior to Pandas DataFrame structuring.
+* **`app.py` (Live Inference Engine):** The edge-deployable UI script. Built with Streamlit, it hosts a local web server for real-time text classification. It operates strictly on frozen, serialized `.pkl` models (TF-IDF Vectorizer and Logistic Regression classifier), completely isolating the end-user interface from the raw training data.
+
+## 🛠️ Key Engineering Highlights
+
+* **Privacy-First Data Sanitization:** Engineered a dynamic, in-memory anonymization pipeline that maps real identities to generic identifiers (e.g., `Person_1`) on the fly, guaranteeing zero persistence of sensitive user data.
+* **Algorithmic PII Leakage Mitigation:** Identified a data leakage vulnerability where the model memorized real names as predictive features. Engineered custom NLP stop-word thresholds to permanently scrub Personally Identifiable Information (PII) from the feature space, forcing the algorithm to learn genuine stylometric and syntactic patterns.
+* **Class Imbalance Optimization:** Mitigated a severe class imbalance (where a single user accounted for ~56% of the dataset) by upgrading the baseline Naive Bayes model to a `LogisticRegression` classifier utilizing `class_weight='balanced'`. This penalized majority-class overfitting and successfully mapped distinct features for quieter group members.
+* **End-to-End Deployment:** Bridged the gap between Jupyter Notebook experimentation and real-world application by engineering a live Streamlit UI (`app.py`), enabling real-time, on-the-fly multiclass probability scoring from user input.
+
+## 🧠 Visualizing the AI's Brain
+
+To prove the model learned distinct linguistic profiles rather than just memorizing data, we extracted the "Top 10 Signature Words" (mathematical TF-IDF weights) for each user. Furthermore, a **Confusion Matrix Heatmap** was generated to visually diagnose mathematically similar texting styles within the group.
+
+![Confusion Matrix Heatmap](confusion_matrix.png) 
+
+
+## 💻 Tech Stack
 * **Language:** Python
-* **Data Wrangling:** Pandas, Regular Expressions (Regex)
-* **Machine Learning:** Scikit-Learn (`TfidfVectorizer`, `LogisticRegression`)
-* **Visualization:** Matplotlib, Seaborn
+* **Data Engineering:** `pandas`, `re` (Regular Expressions)
+* **Machine Learning & NLP:** `scikit-learn` (`TfidfVectorizer`, `LogisticRegression`)
+* **Serialization:** `joblib`
+* **Frontend UI:** `streamlit`
+* **Data Visualization:** `seaborn`, `matplotlib`
 
-## 🧠 Key Engineering Highlights
-1. **Dynamic Data Anonymization:** Engineered a parsing script that automatically identifies real names and converts them into safe, anonymized aliases (`Person_1`, `Person_2`, etc.) to ensure data privacy.
-2. **PII Leakage Prevention:** Implemented a custom stop-word threshold to strip Personally Identifiable Information (PII) from the model's vocabulary, preventing the AI from memorizing sensitive data as predictive cheat codes.
-3. **Advanced Feature Extraction (TF-IDF):** Transformed messy text data into a vectorized mathematical matrix, automatically filtering out common filler words while boosting the mathematical weight of highly unique slang and typing patterns.
-4. **Handling Class Imbalance:** Deployed a Balanced Logistic Regression model to penalize majority-class guessing, forcing the algorithm to accurately learn the behavior of less active users.
-5. **Real-Time Inference Engine:** Built a deployment-ready function that allows users to input raw text on the fly and receive an instant prediction alongside a mathematical confidence probability score.
+## ⚙️ How to Run the Live Web App
 
-## 📊 Visualizing the AI's Brain
-The project includes a detailed **Confusion Matrix Heatmap**, visually mapping out the mathematical overlap between different users' texting styles, and a **Signature Vocabulary Extractor** that prints the top 10 most heavily weighted words for each user.
+The model has already been trained and serialized into `.pkl` files. To run the live inference engine locally:
 
-## 💻 How to Run the Project
-> **Just want to try it?** Skip all this and use the [live demo](https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app) instead.
-
-1. Clone this repository.
-2. Ensure you have `pandas`, `scikit-learn`, `matplotlib`, and `seaborn` installed in your Python environment.
-3. Open `Chat_Classifier.ipynb` in a Jupyter Notebook environment.
-4. Run the cells sequentially from top to bottom.
-5. Play with the `guess_who_said_this()` function at the bottom to test the real-time inference!
+1. Clone this repository to your local machine.
+2. Ensure you have the required libraries installed (`pip install pandas scikit-learn streamlit joblib`).
+3. Navigate to the project folder in your terminal.
+4. Launch the Streamlit server by running:
+   ```bash
+   streamlit run app.py
