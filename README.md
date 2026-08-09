@@ -4,6 +4,7 @@
 [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app)
 
 **🔗 Live Demo:** [Try it here](https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app) — no setup needed, just type a message and see who the AI thinks sent it.
+
 This project is an end-to-end Machine Learning pipeline that ingests raw, unstructured WhatsApp chat exports and builds a predictive NLP classification model. The engine analyzes group texting habits, extracts unique linguistic signatures, and predicts the sender of a given text message based on their mathematical vocabulary profile.
 
 ## 🛠️ Tech Stack
