@@ -2,7 +2,7 @@
 
 **Academic Title:** Predictive Text Analysis on Unstructured Chat Data
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)]https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app/
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://srinidhi-g25-nlp-chat-analyzer-app-ibhxi1.streamlit.app/)
 
 This project is an end-to-end Machine Learning pipeline that securely ingests proprietary, multi-party conversational text, sanitizes it of sensitive identifiers, and accurately classifies the authorship of anonymous messages based purely on stylometric features (vocabulary, syntax, and phrasing).
 
